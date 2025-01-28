@@ -223,10 +223,10 @@ resource "aws_placement_group" "placement_group" {
 
 data "aws_ami" "ubuntu" {
   most_recent = true
-
+  owners = ["099720109477"]
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-*-20.04-amd64-server-*"]
   }
 
   filter {
@@ -234,7 +234,7 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"] # Canonical
+   # Canonical
 }
 
 resource "aws_launch_configuration" "as_conf" {
@@ -315,7 +315,7 @@ resource "aws_lb" "project_load_balancer" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.public_security_group.id]
-  subnets            = [for subnet in aws_subnet.public : subnet.id]
+  subnets            = [aws_subnet.public_subnet1.id , aws_subnet.public_subnet2.id]
 
   enable_deletion_protection = true
 
